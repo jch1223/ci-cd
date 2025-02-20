@@ -22,7 +22,7 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## 배포 파이프라인
 
-![배포 파이프라인 다이어그램](./pipeline.webp)
+![배포 파이프라인 다이어그램](./asset/pipeline.webp)
 
 1. Checkout 액션을 사용해 코드 내려받기
 2. `npm ci` 명령어로 프로젝트 의존성 설치
@@ -54,3 +54,21 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
   - GitHub Actions 워크플로우에서 안전하게 사용 가능
   - 권한 있는 사용자만 접근 가능
   - 버전 관리에서 제외되어 보안 유지
+
+## CDN과 성능최적화
+
+<div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+  <div style="text-align: center;">
+    <img src="./asset/s3.png" alt="Amazon S3 아키텍처" style="max-width: 49%;">
+    <p>Amazon S3를 통한 정적 웹사이트 호스팅</p>
+  </div>
+  <div style="text-align: center;">
+    <img src="./asset/cloud_front.png" alt="CloudFront 아키텍처" style="max-width: 49%;">
+    <p>CloudFront를 통한 캐싱 및 전송 최적화</p>
+  </div>
+</div>
+
+- CloudFront는 주로 텍스트 기반 파일(HTML, CSS, JavaScript 등)에 대해 Gzip이나 Brotli 압축을 수행합니다
+- 위 이미지를 통해서 s3에서 js, css, 이미지 파일 등을 가지고 오는 것보다 cloudfront에서 가지고 오는 것이 더 빠릅고, 용량도 줄어들어 있는 것을 확일 할 수 있습니다.
+- 폰트 파일의 경우 용량에 대해서 차이가 없는데, 그 이유는 폰트 파일(.woff, .woff2, .ttf 등)은 이미 압축된 바이너리 형식이기 때문에 추가 압축 시도를 하여도 효과가 거의 없습니다.
+- 하단에 contents.css의 경우 CloudFront를 통해서 가지고 오는 파일이 아닌 크롬 익스텐션에서 따로 가지고 오는 파일이어서 용량에 차이가 없습니다.
